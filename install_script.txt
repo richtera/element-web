@@ -99,4 +99,24 @@ server {
 #}
 
 sudo certbot --nginx -d matrix.richtera.org -d chat.richtera.app
+sudo apt install build-essential git
 
+git clone git@github.com:richtera/element-web.git
+git clone git@github.com:richtera/synapse.git
+
+cd element-web
+create config file
+yarn
+yarn build
+Hookup nginx to point into webapp
+
+cd ../synapse
+pip install --user pipx
+pipx install poetry
+poetry build
+
+sudo apt install libpq-dev
+poetry add psycopg2-binary (might not be necessary)
+poetry install --extras "all test"
+
+poetry run synapse_homeserver --server-name matrix.richtera.org --config-path homeserver.yaml --generate-config --report-stats=yes
